@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Forte.Migrations.EPiServer</id>
+    <version>$version$</version>
+    <description>Description</description>
+    <title>Forte.Migrations.EPiServer</title>
+    <authors>Forte_ Digital</authors>
+    <owners>$author$</owners>
+    <projectUrl>http://github.com/fortedigital/Migrations/</projectUrl>
+    <licenseUrl>https://github.com/fortedigital/Migrations/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+</package>
