@@ -10,7 +10,7 @@ namespace Forte.Migrations.EPiServer
     public class MigrationRunnerBuilder
     {
         private IPrincipal principal;
-        private IEnumerable<Assembly> assemblies;
+        private IEnumerable<Assembly> assemblies = Enumerable.Empty<Assembly>();
 
         private readonly InitializationEngine context;
 
@@ -21,13 +21,13 @@ namespace Forte.Migrations.EPiServer
 
         public MigrationRunnerBuilder WithAssemblies(params Assembly[] assemblies)
         {
-            this.assemblies = assemblies;
+            this.assemblies = this.assemblies.Concat(assemblies);
             return this;
         }
 
         public MigrationRunnerBuilder WithAssemblyOf<T>()
         {
-            this.assemblies = new [] { typeof(T).Assembly };
+            this.assemblies = this.assemblies.Concat(new [] { typeof(T).Assembly });
             return this;
         }
         
@@ -39,11 +39,17 @@ namespace Forte.Migrations.EPiServer
 
         public MigrationRunner Create()
         {
+            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies ?? context.Assemblies);
+
+            var activator = new DecoratingActivator<IMigration>(
+                new ServiceLocatorActivator(this.context.Locate.Advanced),
+                new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" })));
+
             return new MigrationRunner(
-                ReflectionMigrationProvider.FromAssemblies(this.assemblies ?? context.Assemblies),
+                migrationsProvider,
                 new DynamicDataStoreMigrationLog(),
                 context.Locate.Advanced.GetInstance<DatabaseLockedSynchronizationContext>(),
-                new DecoratingActivator<IMigration>(new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" }))));
+                activator);
         }
 
         private static ClaimsPrincipal CreatePrincipal(string userName, IEnumerable<string> roles)
