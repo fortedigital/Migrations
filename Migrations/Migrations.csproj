@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Forte.Migrations</RootNamespace>
     <Description>Forte Migrations</Description>
     <Authors>Forte_ Digital</Authors>
@@ -8,5 +7,6 @@
     <PackageProjectUrl>http://github.com/fortedigital/Migrations</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/fortedigital/Migrations/blob/master/LICENSE</PackageLicenseUrl>
     <AssemblyName>Forte.Migrations</AssemblyName>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 </Project>
