@@ -7,5 +7,6 @@
     <PackageId>Forte.Migrations</PackageId>
     <PackageProjectUrl>http://github.com/fortedigital/Migrations</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/fortedigital/Migrations/blob/master/LICENSE</PackageLicenseUrl>
+    <AssemblyName>Forte.Migrations</AssemblyName>
   </PropertyGroup>
 </Project>

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Forte.Migrations.EPiServer</RootNamespace>
-    <AssemblyName>Migrations.EPiServer</AssemblyName>
+    <AssemblyName>Forte.Migrations.EPiServer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
