@@ -39,7 +39,7 @@ namespace Forte.Migrations.EPiServer
 
         public MigrationRunner Create()
         {
-            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies ?? context.Assemblies);
+            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies.Any() ? this.assemblies : context.Assemblies);
 
             var activator = new DecoratingActivator<IMigration>(
                 new ServiceLocatorActivator(this.context.Locate.Advanced),
