@@ -10,7 +10,7 @@ namespace Forte.Migrations.EPiServer
     public class MigrationRunnerBuilder
     {
         private IPrincipal principal;
-        private IEnumerable<Assembly> assemblies = Enumerable.Empty<Assembly>();
+        private IEnumerable<Assembly> assemblies;
 
         private readonly InitializationEngine context;
 
@@ -21,13 +21,16 @@ namespace Forte.Migrations.EPiServer
 
         public MigrationRunnerBuilder WithAssemblies(params Assembly[] assemblies)
         {
-            this.assemblies = this.assemblies.Concat(assemblies);
+            this.assemblies = this.assemblies != null ? this.assemblies.Concat(assemblies) : assemblies;
             return this;
         }
 
         public MigrationRunnerBuilder WithAssemblyOf<T>()
         {
-            this.assemblies = this.assemblies.Concat(new [] { typeof(T).Assembly });
+            this.assemblies = this.assemblies != null
+                ? this.assemblies.Concat(new[] {typeof(T).Assembly})
+                : new[] {typeof(T).Assembly};
+            
             return this;
         }
         
