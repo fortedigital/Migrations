@@ -1,7 +1,5 @@
-﻿using System;
-using EPiServer.Framework;
+﻿using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
-using EPiServer.Security;
 
 namespace Forte.Migrations.EPiServer
 {
@@ -9,9 +7,14 @@ namespace Forte.Migrations.EPiServer
     [ModuleDependency(typeof(global::EPiServer.Web.InitializationModule))]
     public class MigrationsModule : IInitializableModule
     {
+        public const string AppSettingsDisableKey = "fMigrationsDisableInit";
+        
         public void Initialize(InitializationEngine context)
         {
-
+            var disableInitFlag = System.Configuration.ConfigurationManager.AppSettings[AppSettingsDisableKey];
+            
+            if (disableInitFlag != null && bool.Parse(disableInitFlag)) return;
+                
             var migrationRunner = new MigrationRunnerBuilder(context)
                 .WithPrincipal("System", "Administrators")
                 .Create();
