@@ -24,7 +24,7 @@ public class MigrationExample : IMigration
         {
             var articleClone = article.CreateWritableClone() as Article;
             articleClone.NewField = article.OldField;
-            _contentRepository.Save(articleWriteable, AccessLevel.Publish);
+            _contentRepository.Save(articleClone, AccessLevel.Publish);
         }
     }
 }
