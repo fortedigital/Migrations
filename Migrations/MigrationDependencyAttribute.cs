@@ -3,11 +3,11 @@
 namespace Forte.Migrations
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class MigrationDependencyAttibute : Attribute
+    public class MigrationDependencyAttribute : Attribute
     {
         public readonly Type Dependency;
 
-        public MigrationDependencyAttibute(Type dependency)
+        public MigrationDependencyAttribute(Type dependency)
         {
             this.Dependency = dependency;
         }

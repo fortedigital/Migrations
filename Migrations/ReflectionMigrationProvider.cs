@@ -36,13 +36,13 @@ namespace Forte.Migrations
                 .Where(t => typeof(IMigration).IsAssignableFrom(t))
                 .Select(t => new { Type = t, MigrationAttribute = t.GetCustomAttribute<MigrationAttribute>()})
                 .Where(m => m.MigrationAttribute != null)
-                .Select(m => new ReflectionMigrationDescriptor(m.Type, m.MigrationAttribute.MigrationId, m.Type.Name, m.MigrationAttribute.SequenceNo, GetDependencies(m.Type)));
+                .Select(m => new ReflectionMigrationDescriptor(m.Type, m.MigrationAttribute.MigrationId, m.Type.Name, m.MigrationAttribute.GetSequenceNoOrNull(), GetDependencies(m.Type)));
         }
 
-        private IEnumerable<string> GetDependencies(Type type)
+        private static IEnumerable<string> GetDependencies(Type type)
         {
             return type
-                .GetCustomAttributes<MigrationDependencyAttibute>()
+                .GetCustomAttributes<MigrationDependencyAttribute>()
                 .Select(d => d.Dependency)
                 .Select(t => new {Type = t, MigrationAttribute = t.GetCustomAttribute<MigrationAttribute>()})
                 .Where(m => m.MigrationAttribute != null)
