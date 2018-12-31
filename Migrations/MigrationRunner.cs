@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Forte.Migrations.Tests;
 
 namespace Forte.Migrations
 {
@@ -26,7 +27,7 @@ namespace Forte.Migrations
         public async Task RunMigrationsAsync()
         {
             var availableMigrations = this.migrationProvider.LoadMigrations();
-            var orderedMigrations = availableMigrations.PartiallyOrdered();
+            var orderedMigrations = new MigrationSorter(availableMigrations).Sort();
 
             await this.synchronizationContext.RunSynchronizedAsync(async () =>
             {

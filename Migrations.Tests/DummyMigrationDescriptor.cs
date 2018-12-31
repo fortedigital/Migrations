@@ -12,5 +12,10 @@ namespace Forte.Migrations.Tests
         {
             throw new System.NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return $"{this.Name} ({this.Id})";
+        }
     }
 }
