@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Forte.Migrations.Tests
+namespace Forte.Migrations
 {
     public class MigrationSorter
     {
@@ -10,7 +10,8 @@ namespace Forte.Migrations.Tests
 
         public MigrationSorter(IEnumerable<MigrationDescriptor> input)
         {
-            this.input = new List<MigrationDescriptor>(input);
+            //we want to have deterministic order if no order is defined by user
+            this.input = new List<MigrationDescriptor>(input.OrderBy(i => i.Id));
         }
 
         public IEnumerable<MigrationDescriptor> Sort()
@@ -57,7 +58,7 @@ namespace Forte.Migrations.Tests
                 return x.SequenceNo < y.SequenceNo;
             }
 
-            return string.Compare(x.Id, y.Id, StringComparison.Ordinal) < 0;
+            return false;
         }
 
         private bool DependsOn(MigrationDescriptor x, MigrationDescriptor y)
