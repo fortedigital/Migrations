@@ -7,7 +7,7 @@ namespace Forte.Migrations.EPiServer
     [ModuleDependency(typeof(global::EPiServer.Web.InitializationModule))]
     public class MigrationsModule : IInitializableModule
     {
-        public const string AppSettingsDisableKey = "fMigrationsDisableInit";
+        private const string AppSettingsDisableKey = "fMigrationsDisableInit";
         
         public void Initialize(InitializationEngine context)
         {

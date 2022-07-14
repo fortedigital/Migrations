@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
 using EPiServer.Framework.Initialization;
+using EPiServer.Security;
+using EPiServer.ServiceLocation;
 
 namespace Forte.Migrations.EPiServer
 {
@@ -45,13 +47,14 @@ namespace Forte.Migrations.EPiServer
             var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies ?? context.Assemblies);
 
             var activator = new DecoratingActivator<IMigration>(
-                new ServiceLocatorActivator(this.context.Locate.Advanced),
-                new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" })));
+                new ServiceProviderActivator(this.context.Locate.Advanced),
+                new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" }), 
+                    context.Locate.Advanced.GetInstance<IPrincipalAccessor>()));
 
             return new MigrationRunner(
                 migrationsProvider,
                 new DynamicDataStoreMigrationLog(),
-                context.Locate.Advanced.GetInstance<DatabaseLockedSynchronizationContext>(),
+                context.Locate.Advanced.GetInstance<IMigrationSynchronizationContext>(),
                 activator);
         }
 
