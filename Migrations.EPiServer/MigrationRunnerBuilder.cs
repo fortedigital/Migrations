@@ -13,7 +13,7 @@ namespace Forte.Migrations.EPiServer
     {
         private IPrincipal principal;
         private readonly IServiceProvider serviceProvider;
-        private IEnumerable<Assembly> assemblies;
+        private readonly IEnumerable<Assembly> assemblies;
         
         public MigrationRunnerBuilder(IServiceProvider serviceProvider, params Assembly[] assemblies)
         {
@@ -21,21 +21,6 @@ namespace Forte.Migrations.EPiServer
             this.assemblies = assemblies;
         }
 
-        public MigrationRunnerBuilder WithAssemblies(params Assembly[] assemblies)
-        {
-            this.assemblies = this.assemblies != null ? this.assemblies.Concat(assemblies) : assemblies;
-            return this;
-        }
-
-        public MigrationRunnerBuilder WithAssemblyOf<T>()
-        {
-            this.assemblies = this.assemblies != null
-                ? this.assemblies.Concat(new[] {typeof(T).Assembly})
-                : new[] {typeof(T).Assembly};
-            
-            return this;
-        }
-        
         public MigrationRunnerBuilder WithPrincipal(string userName, params string[] userRoles)
         {
             this.principal = CreatePrincipal(userName, userRoles);
