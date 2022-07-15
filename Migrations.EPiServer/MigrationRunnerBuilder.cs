@@ -1,39 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
-using EPiServer.Framework.Initialization;
+using EPiServer.Security;
+using EPiServer.ServiceLocation;
 
 namespace Forte.Migrations.EPiServer
 {
     public class MigrationRunnerBuilder
     {
         private IPrincipal principal;
-        private IEnumerable<Assembly> assemblies;
-
-        private readonly InitializationEngine context;
-
-        public MigrationRunnerBuilder(InitializationEngine context)
-        {
-            this.context = context;
-        }
-
-        public MigrationRunnerBuilder WithAssemblies(params Assembly[] assemblies)
-        {
-            this.assemblies = this.assemblies != null ? this.assemblies.Concat(assemblies) : assemblies;
-            return this;
-        }
-
-        public MigrationRunnerBuilder WithAssemblyOf<T>()
-        {
-            this.assemblies = this.assemblies != null
-                ? this.assemblies.Concat(new[] {typeof(T).Assembly})
-                : new[] {typeof(T).Assembly};
-            
-            return this;
-        }
+        private readonly IServiceProvider serviceProvider;
+        private readonly IEnumerable<Assembly> assemblies;
         
+        public MigrationRunnerBuilder(IServiceProvider serviceProvider, params Assembly[] assemblies)
+        {
+            this.serviceProvider = serviceProvider;
+            this.assemblies = assemblies;
+        }
+
         public MigrationRunnerBuilder WithPrincipal(string userName, params string[] userRoles)
         {
             this.principal = CreatePrincipal(userName, userRoles);
@@ -41,17 +28,18 @@ namespace Forte.Migrations.EPiServer
         }
 
         public MigrationRunner Create()
-        {
-            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies ?? context.Assemblies);
+        {   
+            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies);
 
             var activator = new DecoratingActivator<IMigration>(
-                new ServiceLocatorActivator(this.context.Locate.Advanced),
-                new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" })));
+                new ServiceProviderActivator(serviceProvider),
+                new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" }), 
+                    serviceProvider.GetInstance<IPrincipalAccessor>()));
 
             return new MigrationRunner(
                 migrationsProvider,
                 new DynamicDataStoreMigrationLog(),
-                context.Locate.Advanced.GetInstance<DatabaseLockedSynchronizationContext>(),
+                serviceProvider.GetInstance<IMigrationSynchronizationContext>(),
                 activator);
         }
 

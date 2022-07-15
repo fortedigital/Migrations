@@ -7,11 +7,11 @@
     <title>Forte.Migrations.EPiServer</title>
     <authors>Forte_ Digital</authors>
     <owners>$author$</owners>
-    <projectUrl>http://github.com/fortedigital/Migrations/</projectUrl>
-    <licenseUrl>https://github.com/fortedigital/Migrations/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/fortedigital/Migrations</projectUrl>
+    <license type="file">https://github.com/fortedigital/Migrations/blob/master/LICENSE</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="Forte.Migrations" version="1.*" />
+      <dependency id="Forte.Migrations" version="2.*" />
     </dependencies>
   </metadata>
 </package>
