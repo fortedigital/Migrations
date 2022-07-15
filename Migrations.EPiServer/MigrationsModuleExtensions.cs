@@ -23,10 +23,8 @@ namespace Forte.Migrations.EPiServer
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-
-            var serviceProvider = builder.ApplicationServices.GetRequiredService<IServiceProvider>();
-                
-            var migrationRunner = new MigrationRunnerBuilder(serviceProvider, assemblies)
+            
+            var migrationRunner = new MigrationRunnerBuilder(builder.ApplicationServices, assemblies)
                 .WithPrincipal("System", "Administrators")
                 .Create();
 
