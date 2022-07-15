@@ -1,7 +1,5 @@
 ﻿using System;
-using EPiServer.ServiceLocation;
 using Microsoft.Extensions.DependencyInjection;
-using Org.BouncyCastle.Asn1.X509;
 
 namespace Forte.Migrations.EPiServer
 {

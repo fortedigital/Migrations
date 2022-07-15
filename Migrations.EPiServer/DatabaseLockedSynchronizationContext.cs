@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EPiServer.Data;
-using EPiServer.ServiceLocation;
 
 namespace Forte.Migrations.EPiServer
 {
-    [ServiceConfiguration(ServiceType = typeof(IMigrationSynchronizationContext))]
     public class DatabaseLockedSynchronizationContext : IMigrationSynchronizationContext
     {
         private readonly IDatabaseExecutor executor;

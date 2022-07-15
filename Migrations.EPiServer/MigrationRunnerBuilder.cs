@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
-using EPiServer.Framework.Initialization;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 
@@ -12,13 +12,13 @@ namespace Forte.Migrations.EPiServer
     public class MigrationRunnerBuilder
     {
         private IPrincipal principal;
+        private readonly IServiceProvider serviceProvider;
         private IEnumerable<Assembly> assemblies;
-
-        private readonly InitializationEngine context;
-
-        public MigrationRunnerBuilder(InitializationEngine context)
+        
+        public MigrationRunnerBuilder(IServiceProvider serviceProvider, params Assembly[] assemblies)
         {
-            this.context = context;
+            this.serviceProvider = serviceProvider;
+            this.assemblies = assemblies;
         }
 
         public MigrationRunnerBuilder WithAssemblies(params Assembly[] assemblies)
@@ -43,18 +43,18 @@ namespace Forte.Migrations.EPiServer
         }
 
         public MigrationRunner Create()
-        {
-            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies ?? context.Assemblies);
+        {   
+            var migrationsProvider = ReflectionMigrationProvider.FromAssemblies(this.assemblies);
 
             var activator = new DecoratingActivator<IMigration>(
-                new ServiceProviderActivator(this.context.Locate.Advanced),
+                new ServiceProviderActivator(serviceProvider),
                 new RunAsMigrationDecorator(this.principal ?? CreatePrincipal("System", new [] { "Administrators" }), 
-                    context.Locate.Advanced.GetInstance<IPrincipalAccessor>()));
+                    serviceProvider.GetInstance<IPrincipalAccessor>()));
 
             return new MigrationRunner(
                 migrationsProvider,
                 new DynamicDataStoreMigrationLog(),
-                context.Locate.Advanced.GetInstance<IMigrationSynchronizationContext>(),
+                serviceProvider.GetInstance<IMigrationSynchronizationContext>(),
                 activator);
         }
 

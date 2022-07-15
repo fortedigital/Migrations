@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Forte.Migrations.EPiServer</RootNamespace>
     <AssemblyName>Forte.Migrations.EPiServer</AssemblyName>
@@ -13,9 +13,7 @@
     <Content Include="Migrations.EPiServer.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS.AspNetCore" Version="12.2.0" />
-    <PackageReference Include="EPiServer.Framework.AspNetCore" Version="12.2.0" />
-    <PackageReference Include="StructureMap" Version="4.5.2" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore" Version="[12.0.3, 13)" />
+    <PackageReference Include="EPiServer.Framework.AspNetCore" Version="[12.0.3, 13)" />
   </ItemGroup>
 </Project>
