@@ -4,6 +4,29 @@
 
 This package allows you to create and run Entity Framework like migrations. All you need to do is implement `Forte.Migrations.IMigration` interface and mark your class with `Forte.Migrations.MigrationAttribute`
 
+### Setup
+
+```c#
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+    {
+        /*...*/
+        services.AddMigrations();
+        /*...*/
+    }
+    
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        /*...*/
+        app.RunMigrations(typeof(Startup).Assembly);
+        /*...*/
+    }
+}
+```
+
+### Usage
+
 ```c#
 [Migration("4201F11D-3939-44C2-853E-F918739628C8")]
 public class MigrationExample : IMigration
