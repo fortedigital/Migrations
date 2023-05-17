@@ -25,7 +25,13 @@ public class Startup
 }
 ```
 
-By default, `RunMigrations` will run all migrations in the assembly as an `Administrator` user. If you want to change this behavior you can create your own service, instantiate new `MigrationRunnerBuilder` instance and specify principle before building the runner.
+By default, `RunMigrations` will run all migrations in the assembly as a `System` user with an `Administrators` role. If you want to change this behavior you can create your own service, instantiate a new `MigrationRunnerBuilder` instance and specify the principle before building the runner.
+
+```c#
+var migrationRunner = new MigrationRunnerBuilder(services, assemblies)
+    .WithPrincipal("MyUser", "Role1", "Role2")
+    .Create();
+```
 
 ### Usage
 
