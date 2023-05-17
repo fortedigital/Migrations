@@ -2,11 +2,11 @@
   <PropertyGroup>
     <RootNamespace>Forte.Migrations</RootNamespace>
     <Description>Forte Migrations</Description>
-    <Authors>Forte_ Digital</Authors>
+    <Authors>Forte Digital</Authors>
     <PackageId>Forte.Migrations</PackageId>
     <PackageProjectUrl>http://github.com/fortedigital/Migrations</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/fortedigital/Migrations/blob/master/LICENSE</PackageLicenseUrl>
     <AssemblyName>Forte.Migrations</AssemblyName>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 </Project>
