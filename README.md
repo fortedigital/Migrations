@@ -25,6 +25,14 @@ public class Startup
 }
 ```
 
+By default, `RunMigrations` will run all migrations in the assembly as a `System` user with an `Administrators` role. If you want to change this behavior you can create your own service, instantiate a new `MigrationRunnerBuilder` instance and specify the principle before building the runner.
+
+```c#
+var migrationRunner = new MigrationRunnerBuilder(services, assemblies)
+    .WithPrincipal("MyUser", "Role1", "Role2")
+    .Create();
+```
+
 ### Usage
 
 ```c#
@@ -53,8 +61,3 @@ public class MigrationExample : IMigration
 }
 
 ```
-
-### Disable default initialization
-
-By default, when you install this nuget package it will be initialized with default settings, i.e. it will be run as `Administrator` etc. (see [MigrationsModule](Migrations.EPiServer/MigrationsModule.cs)).
-If you want to setup an initialization module by your own you can disable default one by adding `fMigrationsDisableInit` flag with value of `true` to your `AppSettings`
